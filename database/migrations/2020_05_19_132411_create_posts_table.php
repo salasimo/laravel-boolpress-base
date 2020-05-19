@@ -17,7 +17,7 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string("title", 150);
             $table->string("slug");
-            $table->longText("body";)
+            $table->longText("body");
             $table->string("author");
             $table->text("img_path");
             $table->boolean("published");
