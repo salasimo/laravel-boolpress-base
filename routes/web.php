@@ -19,3 +19,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get("/", "PostController@index")
     ->name("posts.index");
+
+Route::get("/pubblicati", "PostController@published")
+    ->name("posts.published");

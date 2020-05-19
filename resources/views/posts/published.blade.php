@@ -1,5 +1,5 @@
-<h1>Tutti gli articoli</h1>
-<a href="/pubblicati">Vai ai pubblicati</a>
+<h1>Articoli già pubblicati</h1>
+<a href="/">Vedi tutti</a>
 <ul>
     @foreach ($posts as $post)
         <li>
