@@ -17,8 +17,10 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get("/", "PostController@index")
-    ->name("posts.index");
+// Route::get("/", "PostController@index")
+//     ->name("posts.index");
 
-Route::get("/pubblicati", "PostController@published")
-    ->name("posts.published");
+// Route::get("/pubblicati", "PostController@published")
+//     ->name("posts.published");
+
+Route::resource('posts', 'PostController');
