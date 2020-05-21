@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
+use Illuminate\Support\Str;
+
+use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class PostController extends Controller
 {
@@ -63,7 +67,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = POst::find($id);
+        $post = Post::find($id);
         if (empty($post)) {
             abort("404");
         }
@@ -73,12 +77,15 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  Post $post
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        if (empty($post)) {
+            abort('404');
+        }
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -90,13 +97,59 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::find($id);
+
+        if (empty($post)) {
+            abort('404');
+        }
+
+        $data = $request->all();
+        // $now = Carbon::now()->format('Y-m-d-H-i-s');
+        // $data['slug'] = Str::slug($data['title'], '-') . $now;
+
+        $validator = Validator::make($data, [
+            'title' => 'required|string|max:150',
+            'body' => 'required',
+            'author' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('articles.edit')
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // if (empty($data['img'])) {
+        //     unset($data['img']);
+        //     // $data['img'] = 'mio path';
+        // }
+
+        //ATTENZIONE QUESTO SOTTO ROMPE L'UPDATE
+        //================================
+
+        // $request->validate([
+        //     'title' => "unique:posts|max:150",
+        //     'slug' => "unique:posts|max:255",
+        //     'author' => "max:255",
+        //     'img_path' => "max:255"
+        // ]);
+
+        //=========================================
+
+
+        $post->fill($data);
+        $updated = $post->update();
+        if (!$updated) {
+            dd("Errore nell'update");
+        }
+
+        return redirect()->route("posts.show", $post->id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Post $post
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
