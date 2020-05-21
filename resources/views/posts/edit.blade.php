@@ -25,5 +25,10 @@
     <br>
     <input type="submit" value="Aggiorna articolo">
 </form>
+<form action="{{route('posts.destroy', $post->id)}}" method="POST">  
+    @method("DELETE")
+    @csrf
+    <input type="submit" value="Elimina">
+</form>
 </body>
 </html>
