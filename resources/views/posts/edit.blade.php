@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Boolpress | Edit</title>
-</head>
+@extends('layouts/app')
 <body>
 <h1>Modifica articolo</h1>
 <form action="{{route('posts.update', $post->id)}}" method="POST">
@@ -28,7 +21,7 @@
 <form action="{{route('posts.destroy', $post->id)}}" method="POST">  
     @method("DELETE")
     @csrf
-    <input type="submit" value="Elimina">
+    <button class="btn btn-danger">Elimina</button>
 </form>
 </body>
 </html>
