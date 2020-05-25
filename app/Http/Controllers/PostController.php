@@ -42,6 +42,11 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $request->all();
+        $now = Carbon::now()->format('d-m-Y');
+
+        $data['slug'] = Str::slug($data['title'], '-') . "-" . $now;
+
         $request->validate([
             'title' => "unique:posts|max:150",
             'slug' => "unique:posts|max:255",
@@ -49,7 +54,7 @@ class PostController extends Controller
             'img_path' => "max:255"
         ]);
 
-        $data = $request->all();
+
         $post = new Post;
         $post->fill($data);
         $saved = $post->save();
@@ -66,9 +71,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $post = Post::find($id);
+        $post = Post::where('slug', $slug)->first();
+
         if (empty($post)) {
             abort("404");
         }
